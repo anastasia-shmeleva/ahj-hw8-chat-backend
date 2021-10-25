@@ -4,8 +4,8 @@
   "main": "index.js",
   "scripts": {
     "prestart": "npm install",
-    "start": "nodemon --experimental-json-modules server.js",
-    "watch": "nodemon --experimental-json-modules -w server.js"
+    "start": "nodemon server.js",
+    "watch": "nodemon -w server.js"
   },
   "author": "coursar",
   "license": "ISC",
