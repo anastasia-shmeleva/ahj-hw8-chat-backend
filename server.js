@@ -16,14 +16,7 @@ app.use(koaBody({
 }));
 
 // Cors
-app.use(
-  cors({
-    origin: '*',
-    credentials: true,
-    'Access-Control-Allow-Origin': true,
-    allowMethods: ['GET', 'POST', 'PATCH', 'DELETE'],
-  })
-);
+app.use(cors());
 
 // // create router
 const router = new Router();
