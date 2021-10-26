@@ -3,7 +3,7 @@ const Koa = require('koa');
 const koaBody = require('koa-body');
 const WS = require('ws');
 const Router = require('koa-router');
-const cors = require('koa2-cors');
+const cors = require('@koa/cors');
 
 const app = new Koa();
 
