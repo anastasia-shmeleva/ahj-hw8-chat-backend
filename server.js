@@ -52,36 +52,37 @@ router.post('/users', async (ctx) => {
 });
 
 // create Map's for each pair user/ws
-const users = new Map();
+const clients = new Map();
 
-wsServer.on('connection', (ws) => { // add a pair user/ws to the list of users
-  users.set(ws, userNames[userNames.length - 1]);
+wsServer.on('connection', (ws) => { // add a pair user/ws to the list of clients
+  
+  clients.set(ws, userNames[userNames.length - 1]);
 
-  // send new list of users to all the users
-  [...wsServer.users]
-    .filter(user => users.has(user))
-    .forEach(user => user.send(JSON.stringify(userNames)));
+  // send new list of clients to all the clients
+  [...wsServer.clients]
+    .filter(o => clients.has(o))
+    .forEach(o => o.send(JSON.stringify(userNames)));
 
   ws.on('message', (message) => {
-    // send new message to every user in the chat
-    [...wsServer.users]
-      .filter(user => users.has(user))
-      .forEach(user => user.send(message));
+    // send new message to every client in the chat
+    [...wsServer.clients]
+      .filter(o => clients.has(o))
+      .forEach(o => o.send(message));
   });
 
   ws.on('close', function () {
     // index of the one that's left
-    const quitedUserName = users.get(ws);
+    const quitedUserName = clients.get(ws);
     const userIndex = userNames.findIndex((userName) => userName === quitedUserName);
 
-    // delete user from the list
+    // delete client from the list
     userNames.splice(userIndex, 1);
-    users.delete(ws);
+    clients.delete(ws);
 
-    // refresh the list (send new list to active users)
-    [...wsServer.users]
-      .filter(user => users.has(user))
-      .forEach(user => user.send(JSON.stringify(userNames)));
+    // refresh the list (send new list to active clients)
+    [...wsServer.clients]
+      .filter(o => clients.has(o))
+      .forEach(o => o.send(JSON.stringify(userNames)));
   });
 });
 
